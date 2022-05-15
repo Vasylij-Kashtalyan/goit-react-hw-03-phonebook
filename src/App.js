@@ -18,7 +18,23 @@ class App extends Component {
   };
 
   idInput = nanoid();
-  idContact = nanoid();
+
+  componentDidMount() {
+    const contacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const stateContact = this.state.contacts;
+    
+    if (stateContact !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(stateContact))
+    }
+  }
 
   handlerSubmitForm = ({ name, number }) => {
     console.log({ name, number });
@@ -53,23 +69,6 @@ class App extends Component {
       contacts: prevState.contacts.filter((contact) => contact.id !== id),
     }));
   };
-
-  componentDidMount() {
-    const contacts = localStorage.getItem("contacts");
-    const parsedContacts = JSON.parse(contacts);
-
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const stateContact = this.state.contacts;
-    
-    if (stateContact !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(stateContact))
-    }
-  }
 
   render() {
     const { filter } = this.state;
