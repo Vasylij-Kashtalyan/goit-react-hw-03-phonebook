@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { nanoid } from "nanoid";
-import Form from "./components/Form";
-import Filter from "./components/Filter";
-import Contact from "./components/Contact";
-import Section from "./components/Section";
+import Notiflix from "notiflix";
 import Container from "./components/Container";
+import Section from "./components/Section";
+import Contact from "./components/Contact";
+import Filter from "./components/Filter";
+import Form from "./components/Form";
 
 class App extends Component {
   state = {
@@ -16,9 +17,6 @@ class App extends Component {
     ],
     filter: "",
   };
-
-  idInput = nanoid();
-
   componentDidMount() {
     const contacts = localStorage.getItem("contacts");
     const parsedContacts = JSON.parse(contacts);
@@ -37,7 +35,15 @@ class App extends Component {
   }
 
   handlerSubmitForm = ({ name, number }) => {
-    console.log({ name, number });
+    const { contacts } = this.state;
+
+    if (
+      contacts
+        .map((contact) => contact.name.toLowerCase())
+        .includes(name.toLowerCase())
+    ) {
+      return Notiflix.Notify.warning(`${name} is already in contacts`);
+    }
 
     const contact = {
       id: nanoid(),
@@ -46,8 +52,9 @@ class App extends Component {
     };
 
     this.setState((prevState) => ({
-      contacts: [contact, ...prevState.contacts],
+      contacts: [...prevState.contacts, contact],
     }));
+    return Notiflix.Notify.success(`${name} is adde in contacts`);
   };
 
   handleFilter = (eve) => {
@@ -55,12 +62,10 @@ class App extends Component {
     this.setState({ [name]: value });
   };
 
-  handelContactFilter = () => {
+  handelContactFilter = (eve) => {
     const { contacts, filter } = this.state;
-    const optimizen = filter.toLowerCase()
-
     return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(optimizen)
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
@@ -76,7 +81,7 @@ class App extends Component {
     return (
       <Container>
         <Section title="Phonebok">
-          <Form Submit={this.handlerSubmitForm} />
+          <Form onSubmit={this.handlerSubmitForm} />
         </Section>
 
         <Filter value={filter} onChange={this.handleFilter} />

@@ -27,8 +27,8 @@
 }
 
 .form__button {
-  width: 100%;
   cursor: pointer;
+  width: 100%;
   margin-left: auto;
   border-radius: 4px;
   padding: 12px 24px;
@@ -36,9 +36,10 @@
   color: white;
   font-weight: 500;
 }
-.form__button:hover{
+
+.form__button:hover {
   box-shadow: 0px 4px 4px rgba(142, 6, 221, 0.15);
-    background-color: rgb(70, 8, 114);
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  
+  background-color: rgb(70, 8, 114);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
 }
