@@ -1,10 +1,13 @@
+import {ReactComponent as AddIcon} from "./icons/add.svg"
 import React, { Component } from "react";
+import IconButton from "./components/IconButton/IconButton";
 import { nanoid } from "nanoid";
-import Notiflix from "notiflix";
 import Container from "./components/Container";
+import Notiflix from "notiflix";
 import Section from "./components/Section";
 import Contact from "./components/Contact";
 import Filter from "./components/Filter";
+import Modal from "./components/Modal/Modal";
 import Form from "./components/Form";
 
 class App extends Component {
@@ -16,6 +19,7 @@ class App extends Component {
       { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
     ],
     filter: "",
+    showModal: false,
   };
   componentDidMount() {
     const contacts = localStorage.getItem("contacts");
@@ -28,9 +32,15 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const stateContact = this.state.contacts;
+    const nextContact = this.state.contacts;
+    const prevContact = prevState.contacts;
     
     if (stateContact !== prevState.contacts) {
       localStorage.setItem('contacts', JSON.stringify(stateContact))
+    }
+
+    if (nextContact.length > prevContact.length) {
+      this.handlerModal();
     }
   }
 
@@ -74,15 +84,29 @@ class App extends Component {
       contacts: prevState.contacts.filter((contact) => contact.id !== id),
     }));
   };
+  handlerModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
 
   render() {
-    const { filter } = this.state;
+    const { filter, showModal } = this.state;
+
 
     return (
       <Container>
+        <IconButton onClick={this.handlerModal} aria-label="Добавить contact"> 
+            <AddIcon width="35" height="35" fill="#fff"/>
+        </IconButton>
+        
         <Section title="Phonebok">
-          <Form onSubmit={this.handlerSubmitForm} />
-        </Section>
+            {showModal && (
+              <Modal onModalClose={this.handlerModal}>
+                <Form onSubmit={this.handlerSubmitForm} />
+              </Modal>
+            )}
+        </Section> 
 
         <Filter value={filter} onChange={this.handleFilter} />
 
