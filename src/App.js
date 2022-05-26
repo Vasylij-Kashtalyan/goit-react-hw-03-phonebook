@@ -1,13 +1,12 @@
-import {ReactComponent as AddIcon} from "./icons/add.svg"
+// import {ReactComponent as AddIcon} from "./icons/add.svg"
 import React, { Component } from "react";
-import IconButton from "./components/IconButton/IconButton";
+// import IconButton from "./components/IconButton/IconButton";
 import { nanoid } from "nanoid";
 import Container from "./components/Container";
 import Notiflix from "notiflix";
 import Section from "./components/Section";
 import Contact from "./components/Contact";
 import Filter from "./components/Filter";
-import Modal from "./components/Modal/Modal";
 import Form from "./components/Form";
 
 class App extends Component {
@@ -91,22 +90,18 @@ class App extends Component {
   };
 
   render() {
-    const { filter, showModal } = this.state;
+    const { filter } = this.state;
 
 
     return (
       <Container>
-        <IconButton onClick={this.handlerModal} aria-label="Добавить contact"> 
+        {/* <IconButton onClick={this.handlerModal} aria-label="Добавить contact"> 
             <AddIcon width="35" height="35" fill="#fff"/>
-        </IconButton>
+        </IconButton> */}
         
         <Section title="Phonebok">
-            {showModal && (
-              <Modal onModalClose={this.handlerModal}>
-                <Form onSubmit={this.handlerSubmitForm} />
-              </Modal>
-            )}
-        </Section> 
+          <Form onSubmit={this.handlerSubmitForm} />
+        </Section>
 
         <Filter value={filter} onChange={this.handleFilter} />
 
@@ -118,7 +113,7 @@ class App extends Component {
         </Section>
       </Container>
     );
-  }
-}
+  };
+};
 
 export default App;

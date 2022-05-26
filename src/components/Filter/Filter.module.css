@@ -1,7 +1,5 @@
 .filter__label {
-  display: flex;
   display: grid;
-  display: contents;
   margin-top: 0;
   margin-bottom: 0;
   margin-right: 24px;
